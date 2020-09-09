@@ -12,7 +12,7 @@
                @foreach ($threads as $thread)
                   <article>
                      <h4 class="card-title">
-                        <a href="/threads/{{ $thread->id }}">  {{ $thread->title }} </a>
+                        <a href="{{ $thread->_path() }}">  {{ $thread->title }} </a>
                      </h4>
                      <p class="card-body"> {{ $thread->body }} </p>
                   </article>
