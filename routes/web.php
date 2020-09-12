@@ -8,6 +8,10 @@ Route::get('/', function ()
 	return view('welcome');
 });
 
+Route::get('test', function ()
+{
+});
+
 Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/threads', 'ThreadsController@index')->name('threads.index');
