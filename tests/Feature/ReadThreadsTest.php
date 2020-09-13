@@ -29,7 +29,7 @@ class ReadThreadsTest extends TestCase
 	/** @test */
 	public function it_can_browse_a_single_thread() // tests show request
 	{
-		$response = $this->get('/threads/' . $this->thread->id); // when getting a particular thread
+		$response = $this->get($this->thread->_path()); // when getting a particular thread
 
 		$response->assertStatus(200); // then
 		$response->assertSee($this->thread->title);
@@ -41,7 +41,8 @@ class ReadThreadsTest extends TestCase
 	{
 		$reply = factory('App\Reply')->create(['thread_id' => $this->thread->id]); // given a reply for a thread
 
-		$response = $this->get('/threads/' . $this->thread->id);
+		$response = $this->get($this->thread->_path());
+		// same as: $response = $this->get('/threads/' . $this->thread->id);
 
 		$response->assertSee($reply->body);
 	}
