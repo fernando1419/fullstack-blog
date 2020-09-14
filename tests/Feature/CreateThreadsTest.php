@@ -28,14 +28,13 @@ class CreateThreadsTest extends TestCase
 		$user = factory('App\User')->create();
 		$this->actingAs($user);
 		// and the necesary data for creating a thread (that is why we use make() and not create())
-		$thread = factory('App\Thread')->create(); // instead of make so that we can generate id for the _path().
+		$thread = factory('App\Thread')->make(); // instead of make so that we can generate id for the _path().
 
 		// when hit the endpoint to create a new thread with
-		$this->post('/threads', $thread->toArray());
+		$response = $this->post('/threads', $thread->toArray());
 
-		// then when we visit the threads page
-		// dd($thread->_path());
-		$response = $this->get($thread->_path());
+		// then when we visit the threads page after submitting post request:
+		$response = $this->get($response->headers->get('Location'));
 		// we should see the new created thread
 		$response->assertSee($thread->title);
 		$response->assertSee($thread->body);

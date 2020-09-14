@@ -12,8 +12,6 @@ class ParticipateInThreadTest extends TestCase
 	/** @test */
 	public function unauthenticated_users_cannot_add_threads()
 	{
-		// $this->withoutExceptionHandling();
-		// $this->expectException('Illuminate\Auth\AuthenticationException');
 		$this->post('/threads/any-channel/1/replies', [])
 			 ->assertRedirect('/login');
 	}
