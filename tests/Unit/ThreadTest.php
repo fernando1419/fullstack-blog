@@ -17,6 +17,15 @@ class ThreadTest extends TestCase
 	}
 
 	/** @test */
+	public function a_thread_can_make_a_string_path()
+	{
+		$thread = factory('App\Thread')->create(); // given a thread
+
+		// dd("/threads/{$thread->channel->slug}/$thread->id");
+		$this->assertEquals("/threads/{$thread->channel->slug}/{$thread->id}", $thread->_path());
+	}
+
+	/** @test */
 	public function a_thread_has_a_creator()
 	{
 		$this->assertInstanceOf('App\User', $this->thread->creator);

@@ -12,11 +12,10 @@ class ParticipateInThreadTest extends TestCase
 	/** @test */
 	public function unauthenticated_users_cannot_add_threads()
 	{
-		$this->withoutExceptionHandling();
-
-		$this->expectException('Illuminate\Auth\AuthenticationException');
-
-		$this->post('/threads/1/replies', []);
+		// $this->withoutExceptionHandling();
+		// $this->expectException('Illuminate\Auth\AuthenticationException');
+		$this->post('/threads/any-channel/1/replies', [])
+			 ->assertRedirect('/login');
 	}
 
 	/** @test */
@@ -27,13 +26,14 @@ class ParticipateInThreadTest extends TestCase
 		$this->be($user);
 		// and an existing thread
 		$thread = factory('App\Thread')->create();
+		// dd($thread->_path()); e.g. "/threads/laroriom/1"
 
 		// when a user adds a reply to a thread (post request with reply data)
 		$reply = factory('App\Reply')->make();
 		$this->post($thread->_path() . '/replies', $reply->toArray());
 
 		// then its reply should be visible on the page.
-		$response = $this->get($thread->_path()); // dd($thread->_path()); // "/trreads/1"
+		$response = $this->get($thread->_path());
 		$response->assertSee($reply->body);
 	}
 }

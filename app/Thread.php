@@ -15,7 +15,7 @@ class Thread extends Model
 	 */
 	public function _path() // cannot use path() for name it seems it is a reserved word.
 	{
-		return '/threads/' . $this->id;
+		return "/threads/{$this->channel->slug}/{$this->id}";
 	}
 
 	public function replies()

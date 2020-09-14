@@ -8,10 +8,17 @@ class RepliesController extends Controller
 {
 	public function __construct()
 	{
-		$this->middleware('auth');
+		$this->middleware('auth')->only('store');
 	}
 
-	public function store(Thread $thread)
+	/**
+	 * store
+	 *
+	 * @param mixed $channelId
+	 * @param Thread $thread
+	 * @return void
+	 */
+	public function store($channelId, Thread $thread)
 	{
 		$thread->addReply([
 		 'body'    => request('body'),
