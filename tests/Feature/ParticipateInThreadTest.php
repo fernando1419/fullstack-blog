@@ -10,8 +10,10 @@ class ParticipateInThreadTest extends TestCase
 	use RefreshDatabase;
 
 	/** @test */
-	public function unauthenticated_user_cannot_add_threads()
+	public function unauthenticated_users_cannot_add_threads()
 	{
+		$this->withoutExceptionHandling();
+
 		$this->expectException('Illuminate\Auth\AuthenticationException');
 
 		$this->post('/threads/1/replies', []);
