@@ -10,25 +10,15 @@ class CreateThreadsTest extends TestCase
 	use RefreshDatabase;
 
 	/** @test */
-	public function guests_cannot_see_the_create_thread_page()
+	public function guests_cannot_create_threads()
 	{
 		$this->withExceptionHandling(); // default behaviour
 
-		$response = $this->get('/threads/create'); // when a non-authenticated user hits the endpoint for creating a thread
+		$this->get('/threads/create') // when a non-authenticated user hits the endpoint for displaying a form to create a thread
+			  ->assertRedirect('/login'); // then it should redirect to the login page.
 
-		$response->assertRedirect('/login'); // then it should redirect to the login page.
-	}
-
-	/** @test */
-	public function guests_cannot_create_threads()
-	{
-		$this->withoutExceptionHandling();
-
-		$this->expectException('Illuminate\Auth\AuthenticationException');
-
-		$thread = factory('App\Thread')->make();
-
-		$this->post('/threads', $thread->toArray());
+	   $this->post('/threads') // when a non-authenticated user hits the endpoint for storing a thread
+			  ->assertRedirect('/login'); // then it should redirect to the login page.
 	}
 
 	/** @test */
