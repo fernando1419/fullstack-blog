@@ -55,4 +55,41 @@ class ThreadTest extends TestCase
 
 		$this->assertInstanceOf('App\Channel', $thread->channel);
 	}
+
+	/** @test */
+	public function a_thread_requires_a_title()
+	{
+		$response = $this->publishThread(['title' => null]); // and a thread without a title
+
+		$response->assertSessionHasErrors('title'); // we should see a title variable in sessions array.
+	}
+
+	/** @test */
+	public function a_thread_requires_a_body()
+	{
+		$response = $this->publishThread(['body' => null]); // and a thread without a body
+
+		$response->assertSessionHasErrors('body'); // we should see a body variable in sessions array.
+	}
+
+	/** @test */
+	public function a_thread_requires_a_valid_channel()
+	{
+		$this->publishThread(['channel_id' => null]) // and a thread without a channel_id
+			 ->assertSessionHasErrors('channel_id'); // we should see a channel_id variable in sessions array.
+
+		factory('App\Channel', 2)->create();
+
+		$this->publishThread(['channel_id' => 9999999]) // non existing channel_id
+		   ->assertSessionHasErrors('channel_id'); // we should see a channel_id variable in sessions array.
+	}
+
+	public function publishThread($attributes = [])
+	{
+		$this->actingAs($user = factory('App\User')->create()); // given a logged in user
+
+		$thread = factory('App\Thread')->make($attributes); // and a thread without a title
+
+		return $this->post('/threads', $thread->toArray()); // when we make a post request to this endpoint
+	}
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Thread;
+use Illuminate\Http\Request;
 
 class RepliesController extends Controller
 {
@@ -12,18 +13,23 @@ class RepliesController extends Controller
 	}
 
 	/**
-	 * store
+	 * Store a newly created resource in storage.
 	 *
-	 * @param mixed $channelId
-	 * @param Thread $thread
-	 * @return void
+	 * @param integer $channelId
+	 * @param  \App\Thread  $thread
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
 	 */
-	public function store($channelId, Thread $thread)
+	public function store($channelId, Thread $thread, Request $request)
 	{
+		$this->validate($request, [
+		   'body' => 'required'
+	   ]);
+
 		$thread->addReply([
-		 'body'    => request('body'),
-		 'user_id' => auth()->id()
-	 ]);
+		   'body'    => request('body'),
+		   'user_id' => auth()->id()
+	   ]);
 
 		return back();
 	}
