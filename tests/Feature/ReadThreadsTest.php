@@ -12,6 +12,7 @@ class ReadThreadsTest extends TestCase
 	public function setUp(): void // without (): void gives an error.
 	{
 		parent::setUp();
+		$this->withoutExceptionHandling(); // without this line phpunit returns all the stacktrace error (lot of garbage in screen).
 
 		$this->thread = factory('App\Thread')->create(); // given
 	}
@@ -52,10 +53,22 @@ class ReadThreadsTest extends TestCase
 	{
 		$channel              = factory('App\Channel')->create(); // given we have a channel
 	   $threadInChannel    = factory('App\Thread')->create(['channel_id' => $channel->id]); // an a thread that belongs to that channel
-	   $threadNotInChannel = factory('App\Thread')->create(); // and another thread that doesn't belong to that channel
+	   $threadNotInChannel = $this->thread; // and another thread that doesn't belong to that channel
 
 	   $this->get("/threads/{$channel->slug}") // when call this url
 			->assertSee($threadInChannel->title) // then we spect to see this channel
 			->assertDontSee($threadNotInChannel->title); // and not this one.
+	}
+
+	/** @test */
+	public function an_authenticated_user_can_filter_threads_by_his_name()
+	{
+		$this->actingAs(factory('App\User')->create(['name' => 'Juan'])); // given a signedin user.
+		$threadByJuan      = factory('App\Thread')->create(['user_id' => auth()->id()]); // and thread associated with Juan
+	   $threadNotByJuan = $this->thread; // and also a thread of a different user
+
+	   $this->get('/threads?by=Juan') // when calling this uri
+			->assertSee($threadByJuan->title) // we expect to see the title of Juan's thread
+		   ->assertDontSee($threadNotByJuan->title); // and not see the title of not Juan's thread
 	}
 }
