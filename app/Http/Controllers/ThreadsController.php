@@ -50,7 +50,7 @@ class ThreadsController extends Controller
 	public function store(Request $request)
 	{
 		// dd($request->all());
-		$this->validate($request, [
+		$this->validate($request, [ // redirects back with errors if validation fails.
 		   'title'      => 'required',
 		   'body'       => 'required',
 		   'channel_id' => 'required|exists:channels,id',

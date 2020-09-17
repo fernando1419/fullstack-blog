@@ -30,26 +30,32 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                           <a class="nav-link" href="{{ route('threads.index') }}">All Threads</a>
-                        </li>
-                        <!-- channels -->
-                        <div class="dropdown">
-                           <a class="btn dropdown-toggle" href="#" role="button"
-                              id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              Channels
-                           </a>
+               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <!-- Left Side Of Navbar -->
+                  <ul class="navbar-nav mr-auto">
+                     <!-- All Threads -->
+                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('threads.index') }}">All Threads</a>
+                     </li>
+                     <!-- New Thread -->
+                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('threads.create') }}"> New Thread </a>
+                     </li>
+                     <!-- Channels -->
+                     <div class="dropdown">
+                        <a class="btn dropdown-toggle" href="#" role="button"
+                           id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Channels
+                        </a>
 
-                           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                              @foreach (App\Channel::all() as $channel)
-                                 <a class="dropdown-item" href="/threads/{{$channel->slug}}">{{ $channel->name }}</a>
-                              @endforeach
-                           </div>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                           @foreach (App\Channel::all() as $channel)
+                              <a class="dropdown-item" href="/threads/{{$channel->slug}}">{{ $channel->name }}</a>
+                           @endforeach
                         </div>
-                    </ul>
+                     </div>
+
+                  </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
