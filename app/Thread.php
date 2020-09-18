@@ -3,10 +3,24 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Thread extends Model
 {
 	protected $guarded = [];
+
+	/**
+	 * The "booted" method of the model.
+	 *
+	 * @return void
+	 */
+	protected static function booted()
+	{
+		static::addGlobalScope('replyCount', function (Builder $builder)
+		{
+			$builder->withCount('replies');
+		});
+	}
 
 	/**
 	 * _path. Specific thread resource.
