@@ -17,9 +17,13 @@
          </div>
 
          <!-- Replies to the thread -->
-         @foreach ($thread->replies as $reply)
+         @foreach ($replies as $reply)
             @include ('threads._reply')
          @endforeach
+
+         <!-- paginating replies -->
+         <br/>
+         {{ $replies->links() }}
 
          <!-- Form to add a new Reply -->
          <div class="mt-3">
